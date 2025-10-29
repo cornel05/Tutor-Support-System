@@ -2,9 +2,6 @@ import FullCalendar, { DateSelectArg, EventClickArg, EventContentArg } from '@fu
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import '@fullcalendar/core/index.css';
-import '@fullcalendar/daygrid/index.css';
-import '@fullcalendar/timegrid/index.css';
 import { Session } from '../types';
 import { format } from 'date-fns';
 import { Badge } from './ui/badge';

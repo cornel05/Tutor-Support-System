@@ -15,10 +15,24 @@ import { toast } from 'sonner';
 import Confetti from 'react-confetti';
 import { useSessions } from '../hooks/useSessions';
 import { useWindowSize } from '@uidotdev/usehooks';
-import { format } from 'date-fns';
+import { format, isValid, parseISO } from 'date-fns';
 import { CalendarClock, NotebookPen, Send, Sparkles, Star } from 'lucide-react';
 
 const needsPlaceholder = 'Share what you need help with, e.g. "Struggling with calculus integrals" or "Need feedback on AI project".';
+
+// Safe date formatting helper
+function safeFormatDate(dateString: string, timeString: string, formatStr: string): string {
+  try {
+    const dateTime = `${dateString}T${timeString}`;
+    const date = new Date(dateTime);
+    if (isValid(date)) {
+      return format(date, formatStr);
+    }
+  } catch (error) {
+    console.error('Invalid date:', dateString, timeString, error);
+  }
+  return 'Invalid date';
+}
 
 function StudentDashboard() {
   const { user } = useAuthStore();
@@ -132,9 +146,9 @@ function StudentDashboard() {
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/10 px-6 py-5 text-sm text-white/90">
             <p className="font-semibold">Next session</p>
-            {upcoming.length ? (
+            {upcoming.length > 0 && upcoming[0].date && upcoming[0].start ? (
               <p>
-                {format(new Date(`${upcoming[0].date}T${upcoming[0].start}`), 'EEE, MMM d • HH:mm')} with{' '}
+                {safeFormatDate(upcoming[0].date, upcoming[0].start, 'EEE, MMM d • HH:mm')} with{' '}
                 <span className="font-semibold text-white">
                   {tutors.find((t) => t.id === upcoming[0].tutorId)?.name}
                 </span>
@@ -328,7 +342,7 @@ function StudentDashboard() {
               >
                 <div>
                   <p className="font-semibold text-white">
-                    {format(new Date(`${session.date}T${session.start}`), 'EEE, MMM d • HH:mm')}
+                    {safeFormatDate(session.date, session.start, 'EEE, MMM d • HH:mm')}
                   </p>
                   <p className="text-sm text-slate-400">
                     with {tutors.find((tutor) => tutor.id === session.tutorId)?.name} • {session.type}
@@ -374,7 +388,7 @@ function StudentDashboard() {
                     <div>
                       <p className="font-semibold text-white">{tutor?.name}</p>
                       <p className="text-xs text-slate-400">
-                        {format(new Date(`${session.date}T${session.start}`), 'MMM d, yyyy')} • {session.type}
+                        {safeFormatDate(session.date, session.start, 'MMM d, yyyy')} • {session.type}
                       </p>
                     </div>
                     {existingFeedback ? (
@@ -455,7 +469,7 @@ function StudentDashboard() {
 
 function messageWithStatus(session: Session, tutorName: string) {
   const prefix = session.status === 'Pending' ? 'Awaiting confirmation' : session.status;
-  return `${prefix} with ${tutorName} on ${format(new Date(`${session.date}T${session.start}`), 'MMM d HH:mm')}`;
+  return `${prefix} with ${tutorName} on ${safeFormatDate(session.date, session.start, 'MMM d HH:mm')}`;
 }
 
 export default StudentDashboard;
