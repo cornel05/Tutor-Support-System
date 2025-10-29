@@ -1,60 +1,35 @@
-import { lazy, Suspense } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { Layout } from './components/Layout';
-import { useAuthStore } from './stores/authStore';
-import { Loader2 } from 'lucide-react';
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
-const Login = lazy(() => import('./pages/Login'));
-const StudentDashboard = lazy(() => import('./pages/StudentDashboard'));
-const TutorDashboard = lazy(() => import('./pages/TutorDashboard'));
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+function App() {
+  const [count, setCount] = useState(0)
 
-function ProtectedRoute({ children, role }: { children: JSX.Element; role?: string }) {
-  const { user } = useAuthStore();
-  if (!user) return <Navigate to="/login" replace />;
-  if (role && user.role !== role) return <Navigate to={`/${user.role}`} replace />;
-  return children;
-}
-
-const Loader = () => (
-  <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400">
-    <Loader2 className="mr-3 h-5 w-5 animate-spin" /> Loading Tutor Support...
-  </div>
-);
-
-export default function App() {
   return (
-    <Suspense fallback={<Loader />}>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/student/*"
-            element={
-              <ProtectedRoute role="student">
-                <StudentDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tutor/*"
-            element={
-              <ProtectedRoute role="tutor">
-                <TutorDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute role="admin">
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
-      </Routes>
-    </Suspense>
-  );
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
+
+export default App
