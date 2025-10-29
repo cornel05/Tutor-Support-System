@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "buildCommand": "cd tutor-system-mvp && npm ci --include=optional && npm run build",
+  "outputDirectory": "tutor-system-mvp/dist",
+  "installCommand": "cd tutor-system-mvp && npm ci --include=optional",
+  "framework": null
+}
