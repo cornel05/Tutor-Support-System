@@ -4,14 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": "20.x",
-    "npm": ">=10.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "postinstall": "npm install --include=optional @rollup/rollup-linux-x64-gnu || true"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@fullcalendar/common": "^5.11.5",
@@ -46,7 +44,6 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
-    "@rollup/rollup-linux-x64-gnu": "^4.28.1",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "autoprefixer": "^10.4.16",
