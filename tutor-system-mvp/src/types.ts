@@ -8,6 +8,7 @@ export type User = {
   major?: string;
   needs?: string[];
   expertise?: string[];
+  availability?: string[];
   rating?: number;
   avatar?: string;
 };
